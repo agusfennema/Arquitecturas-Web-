@@ -1,53 +1,66 @@
 package com.ejemplo;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
+
+import java.util.List;
 
 public class App {
 
     public static void main(String[] args) {
 
-        String url = "jdbc:mysql://localhost:3306/arquitecturas_web";
-        String usuario = "root";
-        String password = "";
+        EntityManagerFactory emf =
+                Persistence.createEntityManagerFactory("tp1");
+
+        EntityManager em = emf.createEntityManager();
 
         try {
-            Connection conexion = DriverManager.getConnection(url, usuario, password);
-    //        String sql = "SELECT * FROM persona";
 
-  String sql = "INSERT INTO persona (id, nombre, edad) VALUES (?, ?, ?)";
+            // INSERTAR UNA PERSONA
 
-PreparedStatement sentencia = conexion.prepareStatement(sql);
+            em.getTransaction().begin();
 
-sentencia.setInt(1, 6);
-sentencia.setString(2, "DAVIS");
-sentencia.setInt(3, 30);
+            Persona persona = new Persona(6, "DAVIS", 30);
 
-sentencia.executeUpdate();
+            em.persist(persona);
 
-System.out.println("Persona insertada");
-String sqlSelect = "SELECT * FROM persona";
+            em.getTransaction().commit();
 
-PreparedStatement sentenciaSelect = conexion.prepareStatement(sqlSelect);
-ResultSet resultado = sentenciaSelect.executeQuery();
+            System.out.println("Persona insertada");
 
-while (resultado.next()) {
-    int id = resultado.getInt("id");
-    String nombre = resultado.getString("nombre");
-    int edad = resultado.getInt("edad");
 
-    System.out.println(id + " - " + nombre + " - " + edad);
-}
-            
+            // CONSULTAR TODAS LAS PERSONAS
 
-        System.out.println("¡CONEXIÓN EXITOSA!");
-            conexion.close();
+            List<Persona> personas = em
+                    .createQuery(
+                            "SELECT p FROM Persona p",
+                            Persona.class
+                    )
+                    .getResultList();
+
+            System.out.println("Personas:");
+
+            for (Persona p : personas) {
+                System.out.println(p);
+            }
+
+            System.out.println("¡CONEXIÓN EXITOSA!");
 
         } catch (Exception e) {
-            System.out.println("ERRORRRRRRRRRRRR");
+
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+
+            System.out.println("ERROR");
             e.printStackTrace();
+
+        } finally {
+
+            em.close();
+            emf.close();
+
         }
     }
 }
