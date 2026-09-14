@@ -18,7 +18,7 @@ public class Socio {
     private Persona persona;
 
     @Column
-    private string tipo;
+    private String tipo;
 
     public Socio(){
         super();

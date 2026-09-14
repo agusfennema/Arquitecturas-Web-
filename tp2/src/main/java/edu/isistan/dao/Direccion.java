@@ -49,7 +49,8 @@ public int getId() {
 
 @Override
 public String toString() {
-    return "Persona [id=" + id + ", nombre=" + nombre + ", edad=" + edad + ", domicilio="
+    return "Persona [id=" + id + ", nombre=" + nombre + ", edad=" + edad
+            + ", domicilio=" + domicilio + "]";
 }
     
 }

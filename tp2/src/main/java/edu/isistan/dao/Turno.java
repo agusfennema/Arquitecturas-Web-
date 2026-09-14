@@ -1,14 +1,20 @@
 package edu.isistan.dao;
 
-import java.lang.annotation.Inherited;
-import java.security.Timestamp;
-
-import javax.annotation.processing.Generated;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Column;
+import javax.persistence.ManyToMany;
+import javax.persistence.FetchType;
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.ArrayList;
 
 @Entity
 public class Turno {
-    @Inherited 
-    @GeneratedValue(strategy = GerationType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     @Column
