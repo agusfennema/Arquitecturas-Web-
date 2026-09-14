@@ -17,6 +17,9 @@ public class Persona {
     @ManyToOne
     private Direccion domicilio;
 
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "jugadores")
+    private List<Turno> turnos;
+
     public Persona() {
         super();
     }

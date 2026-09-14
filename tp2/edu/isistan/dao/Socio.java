@@ -21,6 +21,17 @@ public class Socio {
     private string tipo;
 
     public Socio(){
+        super();
+    }
 
+    public Socio(Persona persona, string tipo) {
+        super();
+        this.id = persona.getId();
+        this.persona = persona;
+        this.tipo = tipo;
+    }
+
+    public Persona getPersona(){
+        return persona;
     }
 }
